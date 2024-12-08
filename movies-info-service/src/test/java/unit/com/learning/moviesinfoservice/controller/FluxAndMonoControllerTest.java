@@ -12,7 +12,7 @@ import reactor.test.StepVerifier;
 import java.util.List;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WebFluxTest(controllers = FluxAndMonoController.class)
 @AutoConfigureWebTestClient
@@ -23,7 +23,8 @@ class FluxAndMonoControllerTest {
 
     @Test
     void flux() {
-        webTestClient.get()
+        webTestClient
+                .get()
                 .uri("/flux")
                 .exchange()
                 .expectStatus()
@@ -34,7 +35,8 @@ class FluxAndMonoControllerTest {
 
     @Test
     void flux_approach2() {
-        Flux<Integer> flux = webTestClient.get()
+        Flux<Integer> flux = webTestClient
+                .get()
                 .uri("/flux")
                 .exchange()
                 .expectStatus()
@@ -65,7 +67,8 @@ class FluxAndMonoControllerTest {
 
     @Test
     void helloWorldMono() {
-        webTestClient.get()
+        webTestClient
+                .get()
                 .uri("/mono")
                 .exchange()
                 .expectStatus()
@@ -76,7 +79,8 @@ class FluxAndMonoControllerTest {
 
     @Test
     void helloWorldMono_approach2() {
-        Mono<String> mono = webTestClient.get()
+        Mono<String> mono = webTestClient
+                .get()
                 .uri("/mono")
                 .exchange()
                 .expectStatus()
@@ -91,7 +95,8 @@ class FluxAndMonoControllerTest {
 
     @Test
     void stream() {
-        var flux = webTestClient.get()
+        var flux = webTestClient
+                .get()
                 .uri("/stream")
                 .exchange()
                 .expectStatus()

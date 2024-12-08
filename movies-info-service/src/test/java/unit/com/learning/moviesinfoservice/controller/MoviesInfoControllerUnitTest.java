@@ -2,6 +2,7 @@ package com.learning.moviesinfoservice.controller;
 
 
 import com.learning.moviesinfoservice.domain.MovieInfo;
+import com.learning.moviesinfoservice.service.MoviesInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -14,6 +15,7 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
 
@@ -127,6 +129,37 @@ public class MoviesInfoControllerUnitTest {
                 .expectBody()
                 .jsonPath("$.name").isEqualTo(newMovieInfo.getName())
                 .jsonPath("$.year").isEqualTo(newMovieInfo.getYear());
+    }
+
+    @Test
+    void addMovieInfo_checkValidation() {
+//        "Christian Bale3", "Michael Cane3")
+        //given
+        var newMovieInfo = MovieInfo.builder()
+                .name("")
+                .year(null)
+                .cast(List.of(""))
+                .releaseDate(LocalDate.parse("2012-06-15"))
+                .build();
+
+        webTestClient
+                .post()
+                .uri(MOVIES_INFO_URL)
+                .bodyValue(newMovieInfo)
+                .exchange()
+                .expectStatus()
+                .isBadRequest()
+                .expectBody(String.class)
+                .consumeWith(stringEntityExchangeResult -> {
+                    var responseBody = stringEntityExchangeResult.getResponseBody();
+                    var message = "cast[0]: must be present,name: must be present,year: must not be null";
+                    System.out.println("response body: " + responseBody);
+                    assert responseBody != null;
+                    assertEquals(message, responseBody);
+                });
+//                .expectBody()
+//                .jsonPath("$.name").isEqualTo(newMovieInfo.getName())
+//                .jsonPath("$.year").isEqualTo(newMovieInfo.getYear());
     }
 
     @Test

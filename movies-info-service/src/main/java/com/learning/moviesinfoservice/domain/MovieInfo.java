@@ -1,5 +1,8 @@
 package com.learning.moviesinfoservice.domain;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,8 +23,12 @@ public class MovieInfo {
     @Id
     private String movieInfoId;
 
+    @NotBlank(message = "must be present")
     private String name;
+    @NotNull
+    @Positive(message = "must be a Positive number")
     private Integer year;
-    private List<String> cast;
+
+    private List<@NotBlank(message = "must be present") String> cast;
     private LocalDate releaseDate;
 }

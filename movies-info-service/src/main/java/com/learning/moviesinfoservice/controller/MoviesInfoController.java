@@ -1,12 +1,12 @@
 package com.learning.moviesinfoservice.controller;
 
 import com.learning.moviesinfoservice.domain.MovieInfo;
-import com.learning.moviesinfoservice.exceptions.ResourceNotFoundException;
+import com.learning.moviesinfoservice.service.MoviesInfoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +39,7 @@ public class MoviesInfoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<MovieInfo> addMovieInfo(@RequestBody MovieInfo movieInfo) {
+    public Mono<MovieInfo> addMovieInfo(@RequestBody @Valid MovieInfo movieInfo) {
         return moviesInfoService.addMovieInfo(movieInfo);
     }
 
@@ -58,9 +58,5 @@ public class MoviesInfoController {
                 .then(Mono.just(ResponseEntity.noContent().build()));
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleResourceNotFound(ResourceNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-    }
 
 }

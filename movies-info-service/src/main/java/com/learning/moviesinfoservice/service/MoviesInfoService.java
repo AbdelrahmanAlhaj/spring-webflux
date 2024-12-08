@@ -1,4 +1,4 @@
-package com.learning.moviesinfoservice.controller;
+package com.learning.moviesinfoservice.service;
 
 import com.learning.moviesinfoservice.domain.MovieInfo;
 import com.learning.moviesinfoservice.exceptions.ResourceNotFoundException;

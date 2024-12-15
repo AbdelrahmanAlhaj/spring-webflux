@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -200,5 +201,32 @@ class MoviesInfoControllerIntegrationTest {
                 .exchange()
                 .expectStatus()
                 .isNotFound();
+    }
+
+    @Test
+    void findByYear() {
+        var moviesInfoFlux = movieInfoRepository.findByYear(2005);
+
+        StepVerifier.create(moviesInfoFlux)
+                .expectNextCount(1)
+                .verifyComplete();
+    }
+
+    @Test
+    void findByName() {
+        var moviesInfoFlux = movieInfoRepository.findByName("Batman Begins2");
+
+        StepVerifier.create(moviesInfoFlux)
+                .expectNextCount(1)
+                .verifyComplete();
+    }
+
+    @Test
+    void findByName_notFound() {
+        var moviesInfoFlux = movieInfoRepository.findByName("Batman Begins2 test");
+
+        StepVerifier.create(moviesInfoFlux)
+                .expectNextCount(0)
+                .verifyComplete();
     }
 }

@@ -1,0 +1,13 @@
+POST http://localhost:8092/v1/reviews
+Content-Type: application/json
+
+{
+  "reviewId": "reviewId_fdf8865ded4f",
+  "movieInfoId": 0,
+  "comment": "comment_73a69b25ada9",
+  "rating": 0.00
+}
+
+###
+GET http://localhost:8092/v1/helloworld
+

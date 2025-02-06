@@ -2,12 +2,35 @@ POST http://localhost:8092/v1/reviews
 Content-Type: application/json
 
 {
-  "reviewId": "reviewId_fdf8865ded4f",
-  "movieInfoId": 0,
+  "reviewId": "1",
+  "movieInfoId": 2,
   "comment": "comment_73a69b25ada9",
   "rating": 0.00
 }
 
 ###
-GET http://localhost:8092/v1/helloworld
+GET http://localhost:8092/v1/reviews
+Content-Type: application/json
+
+###
+GET http://localhost:8092/v1/reviews?movieInfoId=1
+Content-Type: application/json
+
+###
+GET http://localhost:8092/v1/reviews?movieInfoId=2
+Content-Type: application/json
+
+###
+PUT http://localhost:8092/v1/reviews/1
+Content-Type: application/json
+
+{
+  "reviewId": "1",
+  "movieInfoId": 5,
+  "comment": "updated_comment_73a69b25ada9",
+  "rating": 50.5
+}
+
+###
+DELETE http://localhost:8092/v1/reviews/1
 

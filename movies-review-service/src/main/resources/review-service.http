@@ -3,9 +3,9 @@ Content-Type: application/json
 
 {
   "reviewId": "1",
-  "movieInfoId": 2,
-  "comment": "comment_73a69b25ada9",
-  "rating": 0.00
+  "movieInfoId": 1,
+  "comment": "Amazing movie with a lot of actions",
+  "rating":9.00
 }
 
 ###

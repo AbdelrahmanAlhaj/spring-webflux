@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: movies-service
+
+server:
+  port: 8093
+
+
+restClient:
+  moviesInfoUrl: http:localhost:8091/v1/movie-info
+  reviewsInfoUrl: http:localhost:8092/v1/reviews

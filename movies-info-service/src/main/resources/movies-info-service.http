@@ -1,0 +1,15 @@
+
+POST http://localhost:8091/v1/movie-info
+Content-Type: application/json
+
+{
+  "movieInfoId": "1",
+  "name": "Law abiding citizen",
+  "year": 2012,
+  "cast": ["test"],
+  "releaseDate": "2012-09-04"
+}
+###
+GET http://localhost:8091/v1/movie-info/1
+Content-Type: application/json
+

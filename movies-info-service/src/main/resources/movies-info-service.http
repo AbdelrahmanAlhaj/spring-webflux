@@ -1,4 +1,4 @@
-
+###Add movie info
 POST http://localhost:8091/v1/movie-info
 Content-Type: application/json
 
@@ -9,7 +9,7 @@ Content-Type: application/json
   "cast": ["test"],
   "releaseDate": "2012-09-04"
 }
-###
+###Fetch Movie by Id
 GET http://localhost:8091/v1/movie-info/1
 Content-Type: application/json
 

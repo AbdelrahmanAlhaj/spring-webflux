@@ -1,3 +1,4 @@
+### Add new Review
 POST http://localhost:8092/v1/reviews
 Content-Type: application/json
 
@@ -8,19 +9,19 @@ Content-Type: application/json
   "rating":9.00
 }
 
-###
+### Fetch all reviews
 GET http://localhost:8092/v1/reviews
 Content-Type: application/json
 
-###
+### Fetch Review by movie id
 GET http://localhost:8092/v1/reviews?movieInfoId=1
 Content-Type: application/json
 
-###
+### fetch Review by movie id
 GET http://localhost:8092/v1/reviews?movieInfoId=2
 Content-Type: application/json
 
-###
+### Update Review
 PUT http://localhost:8092/v1/reviews/1
 Content-Type: application/json
 
@@ -31,7 +32,7 @@ Content-Type: application/json
   "rating": 50.5
 }
 
-###
+###Update Review not exists
 PUT http://localhost:8092/v1/reviews/999
 Content-Type: application/json
 
@@ -42,6 +43,6 @@ Content-Type: application/json
   "rating": 50.5
 }
 
-###
+### Delte Review
 DELETE http://localhost:8092/v1/reviews/1
 

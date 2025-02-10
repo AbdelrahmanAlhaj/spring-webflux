@@ -1,9 +1,13 @@
 package com.learning.moviesreview.handler;
 
 import com.learning.moviesreview.domain.Review;
+import com.learning.moviesreview.exception.ReviewException;
 import com.learning.moviesreview.exception.ReviewNotFoundException;
 import com.learning.moviesreview.repository.ReviewRepository;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -11,15 +15,33 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.stream.Collectors;
+
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class ReviewHandler {
+
+    private final Validator validator;
     private final ReviewRepository reviewRepository;
 
     public Mono<ServerResponse> addReview(ServerRequest request) {
         return request.bodyToMono(Review.class)
+                .doOnNext(this::validateReview)
                 .flatMap(reviewRepository::save)
                 .flatMap(ServerResponse.status(HttpStatus.CREATED)::bodyValue);
+    }
+
+    private void validateReview(Review review) {
+        var constraintViolations = validator.validate(review);
+        if (!constraintViolations.isEmpty()) {
+            log.info("Validation errors: {}", constraintViolations);
+            var errors = constraintViolations.stream()
+                    .map(ConstraintViolation::getMessage)
+                    .sorted()
+                    .collect(Collectors.joining(","));
+            throw new ReviewException(errors);
+        }
     }
 
     public Mono<ServerResponse> getReviews(ServerRequest request) {

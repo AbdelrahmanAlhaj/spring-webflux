@@ -32,5 +32,16 @@ Content-Type: application/json
 }
 
 ###
+PUT http://localhost:8092/v1/reviews/999
+Content-Type: application/json
+
+{
+  "reviewId": "1",
+  "movieInfoId": 5,
+  "comment": "updated_comment_73a69b25ada9",
+  "rating": 50.5
+}
+
+###
 DELETE http://localhost:8092/v1/reviews/1
 

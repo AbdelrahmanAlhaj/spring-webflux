@@ -1,6 +1,7 @@
 package com.learning.moviesreview.handler;
 
 import com.learning.moviesreview.domain.Review;
+import com.learning.moviesreview.exception.ReviewNotFoundException;
 import com.learning.moviesreview.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,8 @@ public class ReviewHandler {
 
     public Mono<ServerResponse> updateReview(ServerRequest request) {
         var reviewId = request.pathVariable("reviewId");
-        var existingReview = reviewRepository.findById(reviewId);
+        var existingReview = reviewRepository.findById(reviewId)
+                .switchIfEmpty(Mono.error(new ReviewNotFoundException("Review not found for the give review id " + reviewId)));
 
         return existingReview
                 .flatMap(review -> request.bodyToMono(Review.class)

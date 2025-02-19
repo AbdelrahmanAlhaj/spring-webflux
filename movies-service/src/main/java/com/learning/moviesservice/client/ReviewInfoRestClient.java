@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class ReviewInfoClient {
+public class ReviewInfoRestClient {
 
     @Value("${restClient.reviewsInfoUrl}")
     private String reviewUrl;

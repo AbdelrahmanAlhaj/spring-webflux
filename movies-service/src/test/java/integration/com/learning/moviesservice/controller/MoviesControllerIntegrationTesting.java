@@ -1,5 +1,6 @@
 package com.learning.moviesservice.controller;
 
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.learning.moviesservice.domain.Movie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +85,8 @@ public class MoviesControllerIntegrationTesting {
                 .is4xxClientError()
                 .expectBody(String.class)
                 .isEqualTo("There is no movie available for the passed Id 1");
+
+        WireMock.verify(1, getRequestedFor(urlPathEqualTo("/v1/movie-info/" + movieId)));
         //then
     }
 
@@ -144,7 +147,7 @@ public class MoviesControllerIntegrationTesting {
                 .expectBody(String.class)
                 .isEqualTo("Server Exception in MoviesInfoService Movies Service Unavailable");
 
-        //then
+        WireMock.verify(4, getRequestedFor(urlPathEqualTo("/v1/movie-info/" + movieId)));
     }
 
 }

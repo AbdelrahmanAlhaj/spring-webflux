@@ -9,22 +9,33 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
+import reactor.util.retry.RetryBackoffSpec;
+
+import java.time.Duration;
 
 @Slf4j
 @Configuration
-public class MoviesInfoClient {
+public class MoviesInfoRestClient {
     @Value("${restClient.moviesInfoUrl}")
     private String moviesInfoUrl;
 
     private final WebClient webClient;
 
-    public MoviesInfoClient(WebClient webClient) {
+    public MoviesInfoRestClient(WebClient webClient) {
         this.webClient = webClient;
     }
 
     public Mono<MovieInfo> retrieveMovieInfo(String movieId) {
         var baseUrl = moviesInfoUrl.concat("/{id}");
+
+        RetryBackoffSpec retrySpec = Retry
+                .fixedDelay(3, Duration.ofSeconds(1))
+                .filter(exception -> exception instanceof MoviesInfoServerException)
+                .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) ->
+                        Exceptions.propagate(retrySignal.failure()));
 
         return webClient.get()
                 .uri(baseUrl, movieId)
@@ -50,6 +61,8 @@ public class MoviesInfoClient {
                             );
 
                 })
-                .bodyToMono(MovieInfo.class);
+                .bodyToMono(MovieInfo.class)
+//                .retry(3);
+                .retryWhen(retrySpec);
     }
 }

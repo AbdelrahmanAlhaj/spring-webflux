@@ -15,4 +15,10 @@ public class GlobalExceptionHandler {
         log.error("Exception Caught in handleClientException: {}", e.getMessage());
         return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleMoviesServerClientException(RuntimeException e) {
+        log.error("Exception Caught in handleMovieInfoException: {}", e.getMessage());
+        return ResponseEntity.internalServerError().body(e.getMessage());
+    }
 }

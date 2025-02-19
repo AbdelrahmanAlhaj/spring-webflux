@@ -2,6 +2,7 @@ package com.learning.moviesservice.controller;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.learning.moviesservice.domain.Movie;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -29,6 +30,11 @@ public class MoviesControllerIntegrationTesting {
 
     @Autowired
     WebTestClient webTestClient;
+
+    @BeforeEach
+    void resetWireMock() {
+        WireMock.reset();
+    }
 
     @Test
     void retrieveMovieById() {
@@ -148,6 +154,34 @@ public class MoviesControllerIntegrationTesting {
                 .isEqualTo("Server Exception in MoviesInfoService Movies Service Unavailable");
 
         WireMock.verify(4, getRequestedFor(urlPathEqualTo("/v1/movie-info/" + movieId)));
+    }
+
+    @Test
+    void retrieveMovieById_reviews_5XX() {
+        //given
+        var movieId = "1";
+        stubFor(get(urlPathEqualTo("/v1/movie-info/" + movieId))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("movieinfo.json")
+                ));
+
+        stubFor(get(urlPathEqualTo("/v1/reviews"))
+                .willReturn(aResponse()
+                        .withStatus(500)
+                        .withBody("ReviewService Movies Service Unavailable")
+                ));
+
+        //when
+        webTestClient.get()
+                .uri("/v1/movies/{id}", movieId)
+                .exchange()
+                .expectStatus()
+                .is5xxServerError()
+                .expectBody(String.class)
+                .isEqualTo("Server Exception in ReviewService ReviewService Movies Service Unavailable");
+
+        WireMock.verify(4, getRequestedFor(urlPathMatching("/v1/reviews*")));
     }
 
 }

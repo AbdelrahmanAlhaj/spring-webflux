@@ -14,6 +14,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static com.learning.moviesservice.utils.RetryUtils.retrySpec;
+
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -48,7 +50,8 @@ public class ReviewInfoRestClient {
                                     Mono.error(new ReviewsServerException("Server Exception in ReviewService " + responseMessage))
                             );
                 })
-                .bodyToFlux(Review.class);
+                .bodyToFlux(Review.class)
+                .retryWhen(retrySpec());
 
     }
 }

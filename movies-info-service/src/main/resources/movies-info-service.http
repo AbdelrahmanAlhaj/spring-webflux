@@ -10,6 +10,6 @@ Content-Type: application/json
   "releaseDate": "2012-09-04"
 }
 ###Fetch Movie by Id
-GET http://localhost:8091/v1/movie-info/1
+GET http://localhost:8091/v1/movie-info/3
 Content-Type: application/json
 

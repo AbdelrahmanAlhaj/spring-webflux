@@ -3,12 +3,14 @@ package com.learning.moviesservice.controller;
 import com.learning.moviesservice.client.MoviesInfoRestClient;
 import com.learning.moviesservice.client.ReviewInfoRestClient;
 import com.learning.moviesservice.domain.Movie;
+import com.learning.moviesservice.domain.MovieInfo;
 import com.learning.moviesservice.domain.Review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -28,6 +30,12 @@ public class MoviesController {
                             .collectList();
                     return reviewListMono.map(review -> new Movie(movieInfo, review));
                 });
+    }
+
+    @GetMapping("/stream")
+    public Flux<MovieInfo> retrieveMovieStream() {
+        return moviesInfoRestClient.retrieveMovieInfoStream();
+
     }
 
 }

@@ -101,6 +101,49 @@ class MoviesInfoControllerIntegrationTest {
     }
 
     @Test
+    void getMoviesInfoStream() {
+
+        MovieInfo newMovie = MovieInfo.builder()
+                .movieInfoId(null)
+                .name("Batman Begins4")
+                .year(2005)
+                .cast(List.of("Christian Bale4", "Michael Cane4"))
+                .releaseDate(LocalDate.parse("2005-06-15"))
+                .build();
+
+        webTestClient.post()
+                .uri(MOVIES_INFO_URL)
+                .bodyValue(newMovie)
+                .exchange()
+                .expectStatus()
+                .isCreated()
+                .expectBody(MovieInfo.class)
+                .consumeWith(movieInfo -> {
+                    var savedMovieInfo = movieInfo.getResponseBody();
+                    assert savedMovieInfo != null;
+                    assert savedMovieInfo.getMovieInfoId() != null;
+                });
+
+        var stream = webTestClient.get()
+                .uri(MOVIES_INFO_URL + "/stream")
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
+                .returnResult(MovieInfo.class)
+                .getResponseBody();
+
+        StepVerifier.create(stream)
+                .assertNext(movieInfo -> {
+                    assert movieInfo.getMovieInfoId() != null;
+                    assertEquals(movieInfo.getName(), newMovie.getName());
+
+                })
+                .thenCancel()
+                .verify();
+    }
+
+
+    @Test
     void getMoviesInfoById() {
         var movieInfoId = "abc";
         webTestClient.get()

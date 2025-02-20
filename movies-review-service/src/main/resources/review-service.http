@@ -3,7 +3,7 @@ POST http://localhost:8092/v1/reviews
 Content-Type: application/json
 
 {
-  "reviewId": "1",
+  "reviewId": "2",
   "movieInfoId": 1,
   "comment": "Amazing movie with a lot of actions",
   "rating":9.00
@@ -12,6 +12,9 @@ Content-Type: application/json
 ### Fetch all reviews
 GET http://localhost:8092/v1/reviews
 Content-Type: application/json
+
+### Fetch all reviews stream
+GET http://localhost:8092/v1/reviews/stream
 
 ### Fetch Review by movie id
 GET http://localhost:8092/v1/reviews?movieInfoId=1

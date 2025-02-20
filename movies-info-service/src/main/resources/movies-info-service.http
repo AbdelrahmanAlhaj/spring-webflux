@@ -6,10 +6,20 @@ Content-Type: application/json
   "movieInfoId": "1",
   "name": "Law abiding citizen",
   "year": 2012,
-  "cast": ["test"],
+  "cast": [
+    "test"
+  ],
   "releaseDate": "2012-09-04"
 }
+
 ###Fetch Movie by Id
-GET http://localhost:8091/v1/movie-info/3
+GET http://localhost:8091/v1/movie-info/1
 Content-Type: application/json
+
+###Fetch Movie info stream
+GET http://localhost:8091/v1/movie-info/stream
+Content-Type: application/json
+
+
+
 

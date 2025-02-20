@@ -1,0 +1,9 @@
+### movies info with reviews
+GET http://localhost:8093/v1/movies/1
+Content-Type: application/json
+
+
+### movies info with reviews
+GET http://localhost:8093/v1/movies/stream
+
+

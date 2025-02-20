@@ -1,0 +1,51 @@
+### Add new Review
+POST http://localhost:8092/v1/reviews
+Content-Type: application/json
+
+{
+  "reviewId": "2",
+  "movieInfoId": 1,
+  "comment": "Amazing movie with a lot of actions",
+  "rating":9.00
+}
+
+### Fetch all reviews
+GET http://localhost:8092/v1/reviews
+Content-Type: application/json
+
+### Fetch all reviews stream
+GET http://localhost:8092/v1/reviews/stream
+
+### Fetch Review by movie id
+GET http://localhost:8092/v1/reviews?movieInfoId=1
+Content-Type: application/json
+
+### fetch Review by movie id
+GET http://localhost:8092/v1/reviews?movieInfoId=2
+Content-Type: application/json
+
+### Update Review
+PUT http://localhost:8092/v1/reviews/1
+Content-Type: application/json
+
+{
+  "reviewId": "1",
+  "movieInfoId": 5,
+  "comment": "updated_comment_73a69b25ada9",
+  "rating": 50.5
+}
+
+###Update Review not exists
+PUT http://localhost:8092/v1/reviews/999
+Content-Type: application/json
+
+{
+  "reviewId": "1",
+  "movieInfoId": 5,
+  "comment": "updated_comment_73a69b25ada9",
+  "rating": 50.5
+}
+
+### Delte Review
+DELETE http://localhost:8092/v1/reviews/1
+
